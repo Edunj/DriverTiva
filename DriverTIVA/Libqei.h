@@ -11,11 +11,11 @@
 #include <stdint.h>
 
 
-//Configuracion de los puertos QEI
+
 extern void QeiInit();
-//Prototipos de funciones de acceso
 extern void QeiConfigEncoder(uint8_t port,uint32_t pulsos);
 extern float QeiRotacionEncoder(uint8_t enc);
-
+extern void ManejadorQEI0();
+extern void ManejadorQEI1();
 
 #endif

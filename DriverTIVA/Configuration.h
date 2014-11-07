@@ -109,8 +109,8 @@
 #define PF6 0x2E
 #define PF7 0x2F
 
-//Cte TOF
-#define CteVuelo 58
+
+
 
 //Encoder's defines
 #define QEI0 0x00

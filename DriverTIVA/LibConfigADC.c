@@ -29,7 +29,7 @@ void InitSensorADC(void){
 #ifdef USEADC0SEQ1
 	ROM_ADCSequenceConfigure(ADC0_BASE, 1, ADC_TRIGGER_PROCESSOR, 0);
 #endif
-// ADCHardwareOversampleConfigure(ADC0_BASE,64);
+ ADCHardwareOversampleConfigure(ADC0_BASE,64);
 
 //Configuracion por defecto para todos los secuenciadores
 #ifdef USEADC0SEQ0

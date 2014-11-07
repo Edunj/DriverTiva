@@ -21,9 +21,14 @@
 
 static int32_t divisor;
 
+
+
 uint64_t micros(void){
 	return (TimerValueGet64(WTIMER0_BASE)/ ((int64_t)divisor));
 }
+
+
+
 
 void InitReloj(void){
 
@@ -40,7 +45,6 @@ void InitReloj(void){
 	 TimerEnable(WTIMER0_BASE,TIMER_A);
 
 	 TimerLoadSet64(WTIMER0_BASE,0xFFFFFFFFFFFFFFFF);
-
 
 
 

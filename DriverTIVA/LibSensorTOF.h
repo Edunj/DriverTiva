@@ -18,12 +18,13 @@
 
 
 
-
+static float CteVuelo =  58;
 
 
 extern void HandleTrigger();
 extern void TOFTrigger();
 extern void TOFEchoInit(uint8_t GPIOPin);
 extern void TOFProcess();
-extern float  SensorPuertoAPin(uint8_t pin);
+extern void EstablecerCteVuelo(float valor);
+extern float SensorPuertoPin(uint8_t pin);
 #endif /* LIBULTRASONIC_H_ */

@@ -19,13 +19,16 @@
 #include "driverlib/gpio.h"
 #include "driverlib/qei.h"
 
-
+#define USEQEI0
+#define USEQEI1
 
 #ifdef USEQEI0
-int16_t PulsosEncoder0;
+uint16_t OverEncoder0 = 0;
+uint16_t PulsosEncoder0;
 #endif
 #ifdef USEQEI1
-int16_t PulsosEncoder1;
+uint16_t OverEncoder1 = 0;
+uint16_t PulsosEncoder1;
 #endif
 
 
@@ -45,6 +48,40 @@ void QeiInit(){
 #endif
 
 }
+
+#ifdef USEQEI0
+void ManejadorQEI0(){
+	//Ha llegado al limite, por lo que se ha movido 2pi radianes
+
+	if(QEI_INTTIMER == 	ROM_QEIIntStatus(QEI0_BASE,1)){ //Limpiamos la interrupcion
+
+	if(ROM_QEIDirectionGet(QEI0_BASE)){
+		OverEncoder0++;
+	}else{
+		OverEncoder0--;
+	}
+
+	}
+	ROM_QEIIntClear(QEI0_BASE,QEIIntStatus(QEI0_BASE,1));
+
+
+}
+#endif
+#ifdef USEQEI1
+void ManejadorQEI1(){
+
+	if(QEI_INTTIMER == ROM_QEIIntStatus(QEI1_BASE,1)){
+
+	if(ROM_QEIDirectionGet(QEI1_BASE)){
+		OverEncoder1++;
+	}else{
+		OverEncoder1--;
+	}
+
+	}
+	ROM_QEIIntClear(QEI1_BASE,QEIIntStatus(QEI1_BASE,1));
+}
+#endif
 
 void QeiConfigEncoder(uint8_t port,uint32_t pulsos){
 
@@ -76,8 +113,8 @@ void QeiConfigEncoder(uint8_t port,uint32_t pulsos){
 
 	    PulsosEncoder0 = pulsos;
 	    ROM_QEIPositionSet(QEI0_BASE,0);
-	    // QEIIntRegister(QEI0_BASE,*ManejadorQEI0);
-	    // QEIIntEnable(QEI0_BASE,QEI_INTTIMER|QEI_INTINDEX);
+	    QEIIntRegister(QEI0_BASE,*ManejadorQEI0);
+	    ROM_QEIIntEnable(QEI0_BASE,QEI_INTTIMER|QEI_INTINDEX);
 	    ROM_QEIEnable(QEI0_BASE);
 
 	}
@@ -101,9 +138,9 @@ void QeiConfigEncoder(uint8_t port,uint32_t pulsos){
 
 	    PulsosEncoder1 = pulsos;
 	    ROM_QEIPositionSet(QEI1_BASE,0);
-	   //  QEIIntRegister(QEI1_BASE,*ManejadorQEI1);
-	  //   QEIIntEnable(QEI1_BASE,QEI_INTTIMER|QEI_INTINDEX);
-	 //   QEIEnable(QEI1_BASE);
+	    QEIIntRegister(QEI1_BASE,*ManejadorQEI1);
+	    ROM_QEIIntEnable(QEI1_BASE,QEI_INTTIMER|QEI_INTINDEX);
+	    ROM_QEIEnable(QEI1_BASE);
 	    ROM_QEIEnable(QEI1_BASE);
 	}
 #endif
@@ -111,41 +148,9 @@ void QeiConfigEncoder(uint8_t port,uint32_t pulsos){
 
 
 }
-/*
-#ifdef USEQEI0
-void ManejadorQEI0(){
-	//Ha llegado al limite, por lo que se ha movido 2pi radianes
-
-	if(QEI_INTTIMER == 	QEIIntStatus(QEI0_BASE,1)){ //Limpiamos la interrupcion
-	float temp = Enc0Rad;
-	if(QEIDirectionGet(QEI0_BASE)){
-		temp = temp + 2* M_PI;
-	}else{
-		temp = temp - 2* M_PI;
-	}
-	Enc0Rad = temp;
-	}
-	QEIIntClear(QEI0_BASE,QEIIntStatus(QEI0_BASE,1));
 
 
-}
-#endif
-#ifdef USEQEI1
-void ManejadorQEI1(){
-	//Ha llegado al limite, por lo que se ha movido 2pi radianes
-	if(QEI_INTTIMER == QEIIntStatus(QEI1_BASE,1)){
-	float temp1 = Enc1Rad;
-	if(QEIDirectionGet(QEI1_BASE)){
-		temp1 = temp1 + 2* M_PI;
-	}else{
-		temp1 = temp1 - 2* M_PI;
-	}
-	Enc1Rad = temp1;
-	}
-	QEIIntClear(QEI1_BASE,QEIIntStatus(QEI1_BASE,1));
-}
-#endif
-*/
+
 
 //Devuelve el numero de vueltas en radianes
 
@@ -153,13 +158,13 @@ float QeiRotacionEncoder(uint8_t enc){
 	float temp = 0.0;
 #ifdef USEQEI0
 	if(enc == QEI0){
-	temp = (float) (ROM_QEIPositionGet(QEI0_BASE) *2* M_PI)/PulsosEncoder0;
+	temp = (float) ( (OverEncoder0* 0xFFFFFFFF +    ROM_QEIPositionGet(QEI0_BASE)) *2* M_PI)/PulsosEncoder0;
 
 	}
 #endif
 #ifdef USEQEI1
 	if(enc == QEI1){
-	 temp = (float) (ROM_QEIPositionGet(QEI1_BASE) *2* M_PI)/PulsosEncoder1;
+	 temp = (float) ((OverEncoder1* 0xFFFFFFFF + ROM_QEIPositionGet(QEI1_BASE)) *2* M_PI)/PulsosEncoder1;
 	}
 
 #endif

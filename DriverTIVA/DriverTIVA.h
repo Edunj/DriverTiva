@@ -8,7 +8,7 @@
 #ifndef DRIVERTIVA_H_
 #define DRIVERTIVA_H_
 
-//Solo debug
+
 
 
 #include "LibDRVPWM.h"
@@ -18,7 +18,7 @@
 #include "LibSensorTOF.h"
 #include "Funciones.h"
 #include "Configuration.h"
-
+#include "LibLCD5110.h"
 
 
 #define Activartodos

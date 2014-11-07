@@ -28,7 +28,7 @@ int initPWMS( int  periodMs ){
 
 	WidthUs = periodMs*1000;
 
-if(ROM_SysCtlClockGet() < 200000000  ){
+if(ROM_SysCtlClockGet() < 167777216  ){
 	ROM_SysCtlPWMClockSet(SYSCTL_PWMDIV_64);
 	Period = (periodMs *ROM_SysCtlClockGet())/1000;
 	Period = Period/64;

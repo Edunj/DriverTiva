@@ -60,15 +60,50 @@ static  float ValorEResultado[8];
 #ifdef USEPORTF
 static  float ValorFResultado[8];
 #endif
-//Consumo registrado con un multimetro de precisión sobre la entrada trigger 1uA
 
-//*****************************************************************************
-float SensorPuertoAPin(uint8_t pin){
-#ifdef USEPORTA
-	return ValorAResultado[pin];
-#endif
+
+float SensorPuertoPin(uint8_t pin){
+	 uint8_t temp = pin%8;
+	 uint8_t temp2 = pin/8;
+	 float tempvalor = 0.0;
+	 switch(temp2){
+
+	 case 0:{
+		#ifdef USEPORTA
+		 tempvalor = ValorAResultado[temp];
+		#endif
+	 }break;
+	 case 1:{
+		#ifdef USEPORTB
+		 tempvalor = ValorBResultado[temp];
+		#endif
+	 }break;
+	 case 2:{
+		#ifdef USEPORTC
+		 tempvalor = ValorCResultado[temp];
+		#endif
+	 }break;
+	 case 3:{
+		#ifdef USEPORTD
+		 tempvalor = ValorDResultado[temp];
+		#endif
+	 }break;
+	 case 4:{
+		#ifdef USEPORTE
+		 tempvalor = ValorEResultado[temp];
+		#endif
+	 }break;
+	 case 5:{
+		#ifdef USEPORTF
+		 tempvalor = ValorFResultado[temp];
+		#endif
+	 }break;
+	 default:break;
+
+	 }
+	 return tempvalor;
+
 }
-
 
 
 
