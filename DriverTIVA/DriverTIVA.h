@@ -33,7 +33,7 @@
 #include "LibLCD5110.h"
 
 
-#define Activartodos
+//#define Activartodos
 
 
 #ifdef Activartodos

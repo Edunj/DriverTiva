@@ -38,10 +38,43 @@
 
 
 
-void WriteServo(int8_t servo,int16_t ang){
+//*****************************************************************************
+//
+//! Set a angle in a Servomotor put in that pin
+//!
+//! \param PWMpin is a pin PWM.
+//! \param ang is the angle of servomotor.
+//!
+//! This function set a duty cicle of signal for config a servomotor with this
+//! angle in this pin.
+//!
+//! The \e PWMpin parameter can take on the following values:
+//!
+//! - \b  PWM0    - Pin PB6
+//! - \b  PWM1    - Pin PB7
+//! - \b  PWM2    - Pin PB4
+//! - \b  PWM3    - Pin PB5
+//! - \b  PWM4    - Pin PE4
+//! - \b  PWM5    - Pin PE5
+//! - \b  PWM6    - Pin PC4
+//! - \b  PWM7    - Pin PC5
+//! - \b  PWM8    - Pin PD0
+//! - \b  PWM9    - Pin PD1
+//! - \b  PWM10   - Pin PA6
+//! - \b  PWM11   - Pin PA7
+//! - \b  PWM12   - Pin PF0
+//! - \b  PWM13   - Pin PF1
+//! - \b  PWM14   - Pin PF2
+//! - \b  PWM15   - Pin PF3
+//!
+//! \return None.
+//
+//****************************************************************************
+void
+SetAngServo(int8_t PWMpin,int16_t ang){
 	if(ang <=180 && ang >=0){
 
-		switch(servo){
+		switch(PWMpin){
 #ifdef USEGENPWM0
 
 #ifdef USEOUTPWM0
@@ -191,9 +224,39 @@ void WriteServo(int8_t servo,int16_t ang){
 
 
 
-
-uint32_t GetAngServo(int8_t servo){
-		switch(servo){
+//*****************************************************************************
+//
+//! This function return the value of angle config in this pin
+//!
+//! \param PWMpin is a pin PWM.
+//!
+//! This function return the value of angle config in this pin.
+//!
+//! The \e PWMpin parameter can take on the following values:
+//!
+//! - \b  PWM0    - Pin PB6
+//! - \b  PWM1    - Pin PB7
+//! - \b  PWM2    - Pin PB4
+//! - \b  PWM3    - Pin PB5
+//! - \b  PWM4    - Pin PE4
+//! - \b  PWM5    - Pin PE5
+//! - \b  PWM6    - Pin PC4
+//! - \b  PWM7    - Pin PC5
+//! - \b  PWM8    - Pin PD0
+//! - \b  PWM9    - Pin PD1
+//! - \b  PWM10   - Pin PA6
+//! - \b  PWM11   - Pin PA7
+//! - \b  PWM12   - Pin PF0
+//! - \b  PWM13   - Pin PF1
+//! - \b  PWM14   - Pin PF2
+//! - \b  PWM15   - Pin PF3
+//!
+//! \return the angle of the Servomotor config in this pin.
+//
+//****************************************************************************
+uint32_t
+GetAngServo(int8_t PWMpin){
+		switch(PWMpin){
 #ifdef USEGENPWM0
 
 #ifdef USEOUTPWM0
@@ -289,12 +352,43 @@ return 0;
 }
 
 
+//*****************************************************************************
+//
+//! Enables a PWM system and GPIO system
+//!
+//! \param PWMpin is a pin PWM.
+//! \param inc is the period of PWM in milliseconds.
+//!
+//! This function enables the system PWM in the lbirary DriverTiva and
+//! put the periodMs at period.
+//!
+//! The \e PWMpin parameter can take on the following values:
+//!
+//! - \b  PWM0    - Pin PB6
+//! - \b  PWM1    - Pin PB7
+//! - \b  PWM2    - Pin PB4
+//! - \b  PWM3    - Pin PB5
+//! - \b  PWM4    - Pin PE4
+//! - \b  PWM5    - Pin PE5
+//! - \b  PWM6    - Pin PC4
+//! - \b  PWM7    - Pin PC5
+//! - \b  PWM8    - Pin PD0
+//! - \b  PWM9    - Pin PD1
+//! - \b  PWM10   - Pin PA6
+//! - \b  PWM11   - Pin PA7
+//! - \b  PWM12   - Pin PF0
+//! - \b  PWM13   - Pin PF1
+//! - \b  PWM14   - Pin PF2
+//! - \b  PWM15   - Pin PF3
+//!
+//! \return None.
+//
+//****************************************************************************
+void
+WriteServoInc(int8_t PWMpin, int16_t inc){
 
-void WriteServoInc(int8_t servo, int16_t inc){
-
-	uint32_t temp = GetAngServo(servo);
-	WriteServo(servo, temp+inc);
-
+	uint32_t temp = GetAngServo(PWMpin);
+	SetAngServo(PWMpin, temp+inc);
 
 }
 

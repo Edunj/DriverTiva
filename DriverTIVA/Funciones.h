@@ -24,7 +24,11 @@
 
 
 
-//Prototipos
+//*****************************************************************************
+//
+// API Function prototypes
+//
+//*****************************************************************************
 extern uint64_t micros(void);
 extern void InitReloj(void);
 extern uint32_t  map(uint32_t rangmin,uint32_t rangmax,uint32_t valmin,uint32_t valmax,uint32_t val);

@@ -39,9 +39,21 @@
 static PW ConfigPwm; // Pwm array, where a one mean a this Pwm is active, and zero is a Pwm desactive
 static float Period ;
 static float UstoTicks;
-#
 
-int initPWMS( int  periodMs ){
+//*****************************************************************************
+//
+//! Enables a PWM system and GPIO system
+//!
+//! \param peiodMs is the period of PWM in milliseconds.
+//!
+//! This function enables the system PWM in the library DriverTiva and
+//! put the periodMs at period.
+//!
+//! \return None.
+//
+//****************************************************************************
+void
+initPWMS( int  periodMs ){
 
 	WidthUs = periodMs*1000;
 
@@ -49,9 +61,6 @@ if(ROM_SysCtlClockGet() < 167777216  ){
 	ROM_SysCtlPWMClockSet(SYSCTL_PWMDIV_64);
 	Period = (periodMs *ROM_SysCtlClockGet())/1000;
 	Period = Period/64;
-}else
-{
-	return -1;
 }
 
 UstoTicks = Period /WidthUs;
@@ -71,7 +80,7 @@ ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
 ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
 ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
 ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
-#
+
 // Inicialization servos
 #ifdef USEGENPWM0
 ConfigPwm.PWMS[0] = 0x00;
@@ -79,16 +88,49 @@ ConfigPwm.PWMS[0] = 0x00;
 #ifdef USEGENPWM1
 ConfigPwm.PWMS[1] = 0x00;
 #endif
-return 0;
+
 }
 
 
 
+//*****************************************************************************
+//
+//! Enables a PWM pin.
+//!
+//! \param PWMpin is the pin PWM to put the PWM signal .
+//! \param min is the minimum width of PWM signal.
+//! \param max is the maximum width of PWM signal.
+//!
+//!
+//! This function config's a PWM in a GPIO with PWM capabilities.
+//!
+//! The \e PWMpin parameter can take on the following values:
+//!
+//! - \b  PWM0    - Pin PB6
+//! - \b  PWM1    - Pin PB7
+//! - \b  PWM2    - Pin PB4
+//! - \b  PWM3    - Pin PB5
+//! - \b  PWM4    - Pin PE4
+//! - \b  PWM5    - Pin PE5
+//! - \b  PWM6    - Pin PC4
+//! - \b  PWM7    - Pin PC5
+//! - \b  PWM8    - Pin PD0
+//! - \b  PWM9    - Pin PD1
+//! - \b  PWM10   - Pin PA6
+//! - \b  PWM11   - Pin PA7
+//! - \b  PWM12   - Pin PF0
+//! - \b  PWM13   - Pin PF1
+//! - \b  PWM14   - Pin PF2
+//! - \b  PWM15   - Pin PF3
+//!
+//! \return None.
+//
+//*****************************************************************************
+ void
+ ConfigPWM(uint8_t PWMpin,uint16_t min, uint16_t max ){
 
- void ConfigPWM(uint8_t pin,uint16_t min, uint16_t max ){
 
-
-	 switch(pin){
+	 switch(PWMpin){
 #ifdef USEGENPWM0
 #ifdef USEOUTPWM0
 	    case PWM0:{
@@ -409,8 +451,38 @@ return 0;
 
 
 
-
-void TurnOffPWM(uint8_t pin){
+//*****************************************************************************
+//
+//! Disable a PWM signal in a pin.
+//!
+//! \param pin is a pin PWM.
+//!
+//! Allows to disable a PWM signal in a PWM pin.
+//!
+//! The \e PWMpin parameter can take on the following values:
+//!
+//! - \b  PWM0    - Pin PB6
+//! - \b  PWM1    - Pin PB7
+//! - \b  PWM2    - Pin PB4
+//! - \b  PWM3    - Pin PB5
+//! - \b  PWM4    - Pin PE4
+//! - \b  PWM5    - Pin PE5
+//! - \b  PWM6    - Pin PC4
+//! - \b  PWM7    - Pin PC5
+//! - \b  PWM8    - Pin PD0
+//! - \b  PWM9    - Pin PD1
+//! - \b  PWM10   - Pin PA6
+//! - \b  PWM11   - Pin PA7
+//! - \b  PWM12   - Pin PF0
+//! - \b  PWM13   - Pin PF1
+//! - \b  PWM14   - Pin PF2
+//! - \b  PWM15   - Pin PF3
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+TurnOffPWM(uint8_t pin){
 
 
 switch(pin){

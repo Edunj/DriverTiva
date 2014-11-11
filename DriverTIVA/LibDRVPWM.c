@@ -56,7 +56,55 @@ uint8_t MH1,MH2;
 #endif
 
 
-
+//*****************************************************************************
+//
+//! Enables from one till eight bridge's H in the GPIO Port.
+//!
+//! \param A1 is the pin PWM to put signal 1 of bridge H A .
+//! \param A2 is the pin PWM to put signal 2 of bridge H A .
+//! \param B1 is the pin PWM to put signal 1 of bridge H B .
+//! \param B2 is the pin PWM to put signal 2 of bridge H B .
+//! \param C1 is the pin PWM to put signal 1 of bridge H C .
+//! \param C2 is the pin PWM to put signal 2 of bridge H C .
+//! \param D1 is the pin PWM to put signal 1 of bridge H D .
+//! \param D2 is the pin PWM to put signal 2 of bridge H D .
+//! \param E1 is the pin PWM to put signal 1 of bridge H E .
+//! \param E2 is the pin PWM to put signal 2 of bridge H E .
+//! \param F1 is the pin PWM to put signal 1 of bridge H F .
+//! \param F2 is the pin PWM to put signal 2 of bridge H F .
+//! \param G1 is the pin PWM to put signal 1 of bridge H G .
+//! \param G2 is the pin PWM to put signal 2 of bridge H G .
+//! \param H1 is the pin PWM to put signal 1 of bridge H H .
+//! \param H2 is the pin PWM to put signal 2 of bridge H H .
+//!
+//!
+//! Enables from one till eight bridge's H in the GPIO Port.
+//! You can enables the 8 bridge at same time, if you won't to
+//! enable any bridge, put a 0 in the pin's PWM.
+//!
+//! The \e A1,A2,B1,B2,C1,C2,D1,D2,E1,E2,F1,F2,G1,G2,H1,H2
+//! parameters can take on the following values:
+//!
+//! - \b  PWM0    - Pin PB6
+//! - \b  PWM1    - Pin PB7
+//! - \b  PWM2    - Pin PB4
+//! - \b  PWM3    - Pin PB5
+//! - \b  PWM4    - Pin PE4
+//! - \b  PWM5    - Pin PE5
+//! - \b  PWM6    - Pin PC4
+//! - \b  PWM7    - Pin PC5
+//! - \b  PWM8    - Pin PD0
+//! - \b  PWM9    - Pin PD1
+//! - \b  PWM10   - Pin PA6
+//! - \b  PWM11   - Pin PA7
+//! - \b  PWM12   - Pin PF0
+//! - \b  PWM13   - Pin PF1
+//! - \b  PWM14   - Pin PF2
+//! - \b  PWM15   - Pin PF3
+//!
+//! \return None.
+//
+//*****************************************************************************
 void configDRVPWM(uint8_t A1,uint8_t A2,uint8_t B1,uint8_t B2,uint8_t C1,uint8_t C2,uint8_t D1,uint8_t D2,
 				  uint8_t E1,uint8_t E2,uint8_t F1,uint8_t F2,uint8_t G1,uint8_t G2,uint8_t H1,uint8_t H2){
 
@@ -110,10 +158,36 @@ void configDRVPWM(uint8_t A1,uint8_t A2,uint8_t B1,uint8_t B2,uint8_t C1,uint8_t
 #endif
 }
 
-
-void ForWardMotor(uint8_t pot, char motor){
+//*****************************************************************************
+//
+//! This function moves the engine forward on the bridge Bridge
+//!
+//! \param pot is the potency of motor in the bridge.
+//! \param Bridge is the bridge.
+//!
+//!
+//! This function moves the engine forward on the bridge Bridge.
+//!
+//! The \e pot parameter can take any value between 0 - 100.
+//!
+//! The \e Bridge parameter can take on the following values:
+//!
+//! - \b  'a'    - Bridge H A.
+//! - \b  'b'    - Bridge H B.
+//! - \b  'c'    - Bridge H C.
+//! - \b  'd'    - Bridge H D.
+//! - \b  'e'    - Bridge H E.
+//! - \b  'f'    - Bridge H F.
+//! - \b  'g'    - Bridge H G.
+//! - \b  'h'    - Bridge H H.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+ForWardMotor(uint8_t pot, char Bridge){
 	uint8_t t1,t2;
-	switch(motor){
+	switch(Bridge){
 #ifdef USEMOTORA
 	case 'A': t1 = MA1,t2 = MA2;break;
 #endif
@@ -141,13 +215,41 @@ void ForWardMotor(uint8_t pot, char motor){
 	default:break;
 	}
 	int16_t temp = (int16_t) (pot*1.80) ;
-	WriteServo(t1,temp);
-	WriteServo(t2,0);
+	SetAngServo(t1,temp);
+	SetAngServo(t2,0);
 }
 
-void ReverseMotor(uint8_t pot, char motor){
+
+//*****************************************************************************
+//
+//! This function moves the engine reverse on the bridge Bridge
+//!
+//! \param pot is the potency of motor in the bridge.
+//! \param Bridge is the bridge.
+//!
+//!
+//! This function moves the engine reverse on the bridge Bridge.
+//!
+//! The \e pot parameter can take any value between 0 - 100.
+//!
+//! The \e Bridge parameter can take on the following values:
+//!
+//! - \b  'a'    - Bridge H A.
+//! - \b  'b'    - Bridge H B.
+//! - \b  'c'    - Bridge H C.
+//! - \b  'd'    - Bridge H D.
+//! - \b  'e'    - Bridge H E.
+//! - \b  'f'    - Bridge H F.
+//! - \b  'g'    - Bridge H G.
+//! - \b  'h'    - Bridge H H.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+ReverseMotor(uint8_t pot, char Bridge){
 	uint8_t t1,t2;
-	switch(motor){
+	switch(Bridge){
 #ifdef USEMOTORA
 	case 'A': t1 = MA1,t2 = MA2;break;
 #endif
@@ -175,13 +277,38 @@ void ReverseMotor(uint8_t pot, char motor){
 	default:break;
 	}
 	int16_t temp = (int16_t) (pot*1.80) ;
-	WriteServo(t2,temp);
-	WriteServo(t1,0);
+	SetAngServo(t2,temp);
+	SetAngServo(t1,0);
 }
 
-void BrakeMotor(char motor){
+//*****************************************************************************
+//
+//! This function brake a motor in the bridge Bridge.
+//!
+//! \param Bridge is the bridge.
+//!
+//!
+//! This function brake a motor in the bridge Bridge.
+//!
+//!
+//! The \e Bridge parameter can take on the following values:
+//!
+//! - \b  'a'    - Bridge H A.
+//! - \b  'b'    - Bridge H B.
+//! - \b  'c'    - Bridge H C.
+//! - \b  'd'    - Bridge H D.
+//! - \b  'e'    - Bridge H E.
+//! - \b  'f'    - Bridge H F.
+//! - \b  'g'    - Bridge H G.
+//! - \b  'h'    - Bridge H H.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+BrakeMotor(char Bridge){
 	uint8_t t1,t2;
-	switch(motor){
+	switch(Bridge){
 #ifdef USEMOTORA
 	case 'A': t1 = MA1,t2 = MA2;break;
 #endif
@@ -208,8 +335,8 @@ void BrakeMotor(char motor){
 #endif
 	default:break;
 	}
-	WriteServo(t2,180);
-	WriteServo(t1,180);
+	SetAngServo(t2,180);
+	SetAngServo(t1,180);
 }
 
 

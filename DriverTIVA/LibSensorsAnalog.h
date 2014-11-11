@@ -22,8 +22,17 @@
 
 #include "LibConfigADC.h"
 
-extern float ValorSensorAnalogico(int8_t pin, int8_t tipo);
-extern float CmGP2Y0A41Sk0F(int8_t pin);
-extern float CmGP2Y0A21YK(int8_t pin);
-extern float CmGP2D12(int8_t pin);
-#endif /* LIBSENSORSADC_H__ */
+
+
+//*****************************************************************************
+//
+// API Function prototypes
+//
+//*****************************************************************************
+extern float ValorSensorAnalogico(int8_t AdcPin, int8_t type);
+extern float CmGP2Y0A41Sk0F(int8_t AdcPin);
+extern float CmGP2Y0A21YK(int8_t AdcPin);
+extern float CmGP2D12(int8_t AdcPin);
+
+
+#endif /* __DRIVERTIVA_LIBSENSORSADC_H__ */

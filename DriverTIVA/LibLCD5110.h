@@ -24,7 +24,11 @@
 
 
 
-//Prototipos para uso de LCD tipo nokia 84x48 caracteres
+//*****************************************************************************
+//
+// API Function prototypes
+//
+//*****************************************************************************
 extern void gotoXY(int x, int y) ;
 extern void LCDCharacter(uint8_t caracter);
 extern void LCDString(uint8_t *caracter);

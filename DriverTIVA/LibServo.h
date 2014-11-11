@@ -24,9 +24,15 @@
 #include "LibConfigPWM.h"
 
 
-extern void WriteServo(int8_t servo,int16_t ang);
-extern uint32_t GetAngServo(int8_t servo);
-extern void WriteServoInc(int8_t servo, int16_t inc);
+
+//*****************************************************************************
+//
+// API Function prototypes
+//
+//*****************************************************************************
+extern void SetAngServo(int8_t PWMpin,int16_t ang);
+extern uint32_t GetAngServo(int8_t PWMpin);
+extern void WriteServoInc(int8_t PWMpin, int16_t inc);
 
 
 #endif /*  __DRIVERTIVA_LIBSERVO_H_ */

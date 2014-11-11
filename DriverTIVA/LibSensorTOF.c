@@ -73,10 +73,37 @@ static  float ValorEResultado[8];
 static  float ValorFResultado[8];
 #endif
 
+//*****************************************************************************
+//
+//! Returns the convert of rad in Deg
+//!
+//! \param rad is the number of radians.
+//!
+//! This function returns the number of degs of rad.
+//!
+//! \return number of degres in rad.
+//
+//*****************************************************************************
+void
+SetConstantTOF(float value){
+	ConstanTFly = value;
+}
 
-float SensorPuertoPin(uint8_t pin){
-	 uint8_t temp = pin%8;
-	 uint8_t temp2 = pin/8;
+//*****************************************************************************
+//
+//! Returns the value of time of Fly
+//!
+//! \param GPIOPin is a GPIO pin.
+//!
+//! This function returns the distance at sensor time of fly in this pin.
+//!
+//! \return the distance at sensor time of fly in this pin.
+//
+//*****************************************************************************
+float
+ValueTOFPin(uint8_t GPIOPin){
+	 uint8_t temp = GPIOPin%8;
+	 uint8_t temp2 = GPIOPin/8;
 	 float tempvalor = 0.0;
 	 switch(temp2){
 
@@ -119,8 +146,17 @@ float SensorPuertoPin(uint8_t pin){
 
 
 
-//Interrupción cuando pasan los 10us
-void HandleTrigger(){
+//*****************************************************************************
+//
+//! Is the handle for the Timer1A
+//!
+//! This function change the level of the pin PE3 to low.
+//!
+//! \return none.
+//
+//*****************************************************************************
+void
+HandleTrigger(){
 
 	TimerIntClear(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
 	GPIOPinWrite(GPIO_PORTE_BASE, GPIO_PIN_3,0);
@@ -130,8 +166,19 @@ void HandleTrigger(){
 }
 
 
-
-void TOFTrigger(){
+//*****************************************************************************
+//
+//! This function trigger in a PE3 a pulse of 10 microseconds
+//!
+//! This function generate a pulse in the pin PE3 during 10 microseconds.
+//!
+//! If you want to use other pin, change the function.
+//!
+//! \return none.
+//
+//*****************************************************************************
+void
+TOFTrigger(){
 
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER1);
 
@@ -149,8 +196,71 @@ void TOFTrigger(){
 }
 
 
-
-void TOFEchoInit(uint8_t GPIOPin)
+//*****************************************************************************
+//
+//! Prepare a pin for use with a TOF sensor.
+//!
+//! \param GPIOPin is on the pin for the TOF sensor.
+//!
+//! This function initializes the GPIO interrupts and peripherals necessary
+//! to run the corresponding GPIO port.
+//!
+//! The \e GPIOPin parameter can take on the following values:
+//!
+//! - \b PA0 - Pin PA0
+//! - \b PA1 - Pin PA1
+//! - \b PA2 - Pin PA2
+//! - \b PA3 - Pin PA3
+//! - \b PA4 - Pin PA4
+//! - \b PA5 - Pin PA5
+//! - \b PA6 - Pin PA6
+//! - \b PA7 - Pin PA7
+//! - \b PB0 - Pin PB0
+//! - \b PB1 - Pin PB1
+//! - \b PB2 - Pin PB2
+//! - \b PB3 - Pin PB3
+//! - \b PB4 - Pin PB4
+//! - \b PB5 - Pin PB5
+//! - \b PB6 - Pin PB6
+//! - \b PB7 - Pin PB7
+//! - \b PC0 - Pin PC0
+//! - \b PC1 - Pin PC1
+//! - \b PC2 - Pin PC2
+//! - \b PC3 - Pin PC3
+//! - \b PC4 - Pin PC4
+//! - \b PC5 - Pin PC5
+//! - \b PC6 - Pin PC6
+//! - \b PC7 - Pin PC7
+//! - \b PD0 - Pin PD0
+//! - \b PD1 - Pin PD1
+//! - \b PD2 - Pin PD2
+//! - \b PD3 - Pin PD3
+//! - \b PD4 - Pin PD4
+//! - \b PD5 - Pin PD5
+//! - \b PD6 - Pin PD6
+//! - \b PD7 - Pin PD7
+//! - \b PE0 - Pin PE0
+//! - \b PE1 - Pin PE1
+//! - \b PE2 - Pin PE2
+//! - \b PE3 - Pin PE3
+//! - \b PE4 - Pin PE4
+//! - \b PE5 - Pin PE5
+//! - \b PE6 - Pin PE6
+//! - \b PE7 - Pin PE7
+//! - \b PF0 - Pin PF0
+//! - \b PF1 - Pin PF1
+//! - \b PF2 - Pin PF2
+//! - \b PF3 - Pin PF3
+//! - \b PF4 - Pin PF4
+//! - \b PF5 - Pin PF5
+//! - \b PF6 - Pin PF6
+//! - \b PF7 - Pin PF7
+//!
+//! \return None.
+//!
+//*****************************************************************************
+void
+TOFEchoInit(uint8_t GPIOPin)
 {
     //
     // Enable Peripheral Clocks
@@ -834,7 +944,7 @@ void TOFEchoInit(uint8_t GPIOPin)
 		GPIOIntRegister(GPIO_PORTF_BASE,TOFProcess);
 	}
 #endif
-	IntMasterEnable();
+//	IntMasterEnable();
 
 
 
@@ -847,16 +957,25 @@ void TOFEchoInit(uint8_t GPIOPin)
 	//a cm dado que los cm son us/58
 	//Al finalizar se debe volver a cambiar el tipo de interrupcion por flanco de subida
 
+//*****************************************************************************
+//
+//! This is the handle for the GPIO ports.
+//!
+//! This handle, first interruption collects, save the time and value changes
+//! following interruption.Second, if the interruption is for low level,
+//! save the valor of time clock and the difference is the TOF in this pin.
+//!
+//! \return none.
+//
+//*****************************************************************************
+void
+TOFProcess(){
 
-void TOFProcess(){
-//#ifdef USEPORTA || USEPORTB || USEPORTC || USEPORTD || USEPORTE || USEPORTF
 
 	//nada mas llegar nos da igual que pin sea,
 	uint64_t temporal = micros();
 	//Ahora aqui revisamos las interrupciones y deducimos el puerto en cuestion y su pin
 	int32_t interrupts;
-
-//#endif
 
 #ifdef USEPORTA
 	interrupts =  GPIOIntStatus(GPIO_PORTA_BASE,true);

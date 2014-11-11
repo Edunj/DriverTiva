@@ -25,7 +25,15 @@
 #include "driverlib/sysctl.h"
 #include "Configuration.h"
 
-
+//*****************************************************************************
+//
+//! Clear a LCD
+//!
+//! This function clear a LCD type 5110.
+//!
+//! \return none.
+//
+//*****************************************************************************
 void LCDClear(void) {
 #ifdef USELCD
 	int index = 0;
@@ -36,7 +44,17 @@ void LCDClear(void) {
 #endif
 }
 
-
+//*****************************************************************************
+//
+//! Shift Out a byte
+//!
+//! \param val is a byte to shift out in the pin.
+//!
+//! This function shift out a byte in the pin PIN_DIR
+//!
+//! \return none.
+//
+//*****************************************************************************
 void shiftOut( uint8_t val)
 {
 #ifdef USELCD
@@ -60,7 +78,23 @@ void shiftOut( uint8_t val)
 }
 
 
-
+//*****************************************************************************
+//
+//! Send a byte to LCD
+//!
+//! \param dato_o_comando is the type of data.
+//! \param datos is a byte to send.
+//!
+//! This send a byte to the LCD.
+//!
+//! The \e  dato_o_comando can take on the following values:
+//!
+//! - \b  0    - data
+//! - \b  1    - command
+//!
+//! \return none.
+//
+//*****************************************************************************
  void LCDWrite(uint8_t dato_o_comando, uint8_t datos){
 #ifdef USELCD
 	 if(dato_o_comando){
@@ -76,6 +110,20 @@ void shiftOut( uint8_t val)
 #endif
 }
 
+
+ //*****************************************************************************
+ //
+ //! This function positioning a cursor in (x,y)
+ //!
+ //! \param x is the x in pixels
+ //! \param y is the y in pixels
+ //!
+ //! This function positioning a cursor in (x,y)
+ //!
+ //!
+ //! \return none.
+ //
+ //*****************************************************************************
  void gotoXY(int x, int y) {
 #ifdef USELCD
 	 LCDWrite(LCD_COMANDO, 0x80 | x);  // Column.
@@ -83,6 +131,18 @@ void shiftOut( uint8_t val)
 #endif
  }
 
+
+ //*****************************************************************************
+ //
+ //! Write a array the characters
+ //!
+ //! \param caracter is the pointer to first character in array.
+ //!
+ //! This function write a array the characters
+ //!
+ //! \return none.
+ //
+ //*****************************************************************************
  void LCDString(uint8_t *caracter) {
 #ifdef USELCD
    while (*caracter)
@@ -91,6 +151,18 @@ void shiftOut( uint8_t val)
  }
 
 
+
+ //*****************************************************************************
+ //
+ //! Write a character
+ //!
+ //! \param caracter is the  character to print.
+ //!
+ //! This function write a character
+ //!
+ //! \return none.
+ //
+ //*****************************************************************************
  void LCDCharacter(uint8_t caracter) {
 #ifdef USELCD
    LCDWrite(LCD_DATO, 0x00); //Blank vertical line padding
@@ -108,7 +180,15 @@ void shiftOut( uint8_t val)
 
 
 
-
+ //*****************************************************************************
+ //
+ //! Init the display
+ //!
+ //! This function init the display in the pins specified in the configuration.h
+ //!
+ //! \return none.
+ //
+ //*****************************************************************************
  void LCDInit(void){
 #ifdef USELCD
 

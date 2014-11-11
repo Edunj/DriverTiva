@@ -35,15 +35,34 @@
 static int32_t divisor;
 
 
-
-uint64_t micros(void){
+//*****************************************************************************
+//
+//! Returns the number of microseconds since run InitReloj.
+//!
+//! This function returns the interrupt number of microseconds since run the
+//! microcontroller.
+//!
+//! \return uint64_t microseconds.
+//
+//*****************************************************************************
+uint64_t
+micros(void){
 	return (TimerValueGet64(WTIMER0_BASE)/ ((int64_t)divisor));
 }
 
 
 
-
-void InitReloj(void){
+//*****************************************************************************
+//
+//! Init the clock system in WTIMER0. Use both register, Register A and REgisterB
+//!
+//! Config the count in up mode.
+//!
+//! \return none.
+//
+//*****************************************************************************
+void
+InitReloj(void){
 
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_WTIMER0);
 	TimerDisable(WTIMER0_BASE, TIMER_BOTH);
@@ -58,13 +77,21 @@ void InitReloj(void){
 	 TimerEnable(WTIMER0_BASE,TIMER_A);
 
 	 TimerLoadSet64(WTIMER0_BASE,0xFFFFFFFFFFFFFFFF);
-
-
-
 }
 
-
-float radToDeg(float rad){
+//*****************************************************************************
+//
+//! Returns the convert of rad in Deg
+//!
+//! \param rad is the number of radians.
+//!
+//! This function returns the number of degs of rad.
+//!
+//! \return number of degres in rad.
+//
+//*****************************************************************************
+float
+radToDeg(float rad){
 
  return (rad*180.0)/M_PI;
  }
@@ -73,14 +100,35 @@ float degToRad(float deg){
 return (deg*M_PI)/180.0;
 }
 
-/*Odometry para robot rotatorio de tres ruedas con rueda trasera loca.
- *
- *Comprobar la funcion pasandole los puntos de la clase
- */
 
 
-
-void odometry (float x0, float y0, float theta0, int64_t t0, int32_t rotl0, int32_t rotr0,
+//*****************************************************************************
+//
+//! Returns the interrupt number for a given ADC base address and sequence
+//! number.
+//!
+//! \param x0 is the base address of the ADC module.
+//! \param y0 is the sample sequence number.
+//! \param theta0 is the base address of the ADC module.
+//! \param t0 is the sample sequence number.
+//! \param rotl0 is the base address of the ADC module.
+//! \param rotr0 is the base address of the ADC module.
+//! \param x1 is the sample sequence number.
+//! \param y1 is the base address of the ADC module.
+//! \param theta1 is the sample sequence number.
+//! \param t1 is the base address of the ADC module.
+//! \param rotl1 is the sample sequence number.
+//! \param rotr1 is the base address of the ADC module.
+//!
+//! This function returns the interrupt number for the ADC module and sequence
+//! number provided in the \e ui32Base and \e ui32SequenceNum parameters.
+//!
+//! \return Returns the ADC sequence interrupt number or 0 if the interrupt
+//! does not exist.
+//
+//*****************************************************************************
+void
+odometry (float x0, float y0, float theta0, int64_t t0, int32_t rotl0, int32_t rotr0,
 			   float * x1, float * y1,	float * theta1, int64_t * t1, int32_t * rotl1, int32_t * rotr1){
 
 	//Sistema de unidades: metros, radianes, segundos
@@ -113,7 +161,26 @@ void odometry (float x0, float y0, float theta0, int64_t t0, int32_t rotl0, int3
 
 }
 
-uint32_t  map(uint32_t rangmin, uint32_t rangmax, uint32_t valmin, uint32_t valmax, uint32_t val){
+//*****************************************************************************
+//
+//! Returns the interrupt number for a given ADC base address and sequence
+//! number.
+//!
+//! \param rangmin is the base address of the ADC module.
+//! \param rangmax is the sample sequence number.
+//! \param valmin is the base address of the ADC module.
+//! \param valmax is the sample sequence number.
+//! \param val is the base address of the ADC module.
+//!
+//! This function returns the interrupt number for the ADC module and sequence
+//! number provided in the \e ui32Base and \e ui32SequenceNum parameters.
+//!
+//! \return Returns the ADC sequence interrupt number or 0 if the interrupt
+//! does not exist.
+//
+//*****************************************************************************
+uint32_t
+map(uint32_t rangmin, uint32_t rangmax, uint32_t valmin, uint32_t valmax, uint32_t val){
 
 	float temp1 = (float)(rangmax -rangmin);
 	float temp2 = (float)(valmax -valmin);
@@ -121,7 +188,27 @@ uint32_t  map(uint32_t rangmin, uint32_t rangmax, uint32_t valmin, uint32_t valm
 	return  temporal;
 }
 
-uint32_t  mapinv(uint32_t rangmin, uint32_t rangmax, uint32_t valmin, uint32_t valmax, uint32_t val){
+
+//*****************************************************************************
+//
+//! Returns the interrupt number for a given ADC base address and sequence
+//! number.
+//!
+//! \param rangmin is the base address of the ADC module.
+//! \param rangmax is the sample sequence number.
+//! \param valmin is the base address of the ADC module.
+//! \param valmax is the sample sequence number.
+//! \param val is the base address of the ADC module.
+//!
+//! This function returns the interrupt number for the ADC module and sequence
+//! number provided in the \e ui32Base and \e ui32SequenceNum parameters.
+//!
+//! \return Returns the ADC sequence interrupt number or 0 if the interrupt
+//! does not exist.
+//
+//*****************************************************************************
+uint32_t
+mapinv(uint32_t rangmin, uint32_t rangmax, uint32_t valmin, uint32_t valmax, uint32_t val){
 
 	float temp1 = (float)(rangmax -rangmin);
 	float temp2 = (float)(valmax -valmin);
@@ -129,9 +216,24 @@ uint32_t  mapinv(uint32_t rangmin, uint32_t rangmax, uint32_t valmin, uint32_t v
 	return  temporal;
 }
 
-//Con esta funcion podemos extraer de una distribucion con media mean y sigma sigma, una variable aleatoria
+
+//*****************************************************************************
 //
-float randomNormalValue(const double mean, const double sigma){
+//! Returns the interrupt number for a given ADC base address and sequence
+//! number.
+//!
+//! \param mean is the base address of the ADC module.
+//! \param sigma is the sample sequence number.
+//!
+//! This function returns the interrupt number for the ADC module and sequence
+//! number provided in the \e ui32Base and \e ui32SequenceNum parameters.
+//!
+//! \return Returns the ADC sequence interrupt number or 0 if the interrupt
+//! does not exist.
+//
+//*****************************************************************************
+float
+randomNormalValue(const double mean, const double sigma){
 	 double U,V ;
 	 double variance = sigma*sigma;
 	U = ( double)(( rand() % (RAND_MAX) ) / (double)(RAND_MAX));

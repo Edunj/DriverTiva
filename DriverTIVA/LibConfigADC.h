@@ -22,9 +22,15 @@
 #ifndef __DRIVERTIVA_LIBCONFIGADC_H_
 #define __DRIVERTIVA_LIBCONFIGSADC_H_
 
+
+//*****************************************************************************
+//
+// API Function prototypes
+//
+//*****************************************************************************
 extern void InitSensorADC(void);
-extern void ConfigSensorADC(int8_t Sensor);
-extern int32_t TriggerADC(int8_t Sensor );
+extern void ConfigSensorADC(int8_t AdcPin);
+extern int32_t TriggerADC(int8_t AdcPin );
 extern float LSBToVoltage(int32_t lsb);
 
 

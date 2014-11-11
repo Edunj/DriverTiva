@@ -23,11 +23,15 @@
 #include <stdint.h>
 
 
-
+//*****************************************************************************
+//
+// API Function prototypes
+//
+//*****************************************************************************
 extern void QeiInit();
-extern void QeiConfigEncoder(uint8_t port,uint32_t pulsos);
-extern float QeiRotacionEncoder(uint8_t enc);
-extern void ManejadorQEI0();
-extern void ManejadorQEI1();
+extern void QeiConfigEncoder(uint8_t port,uint32_t pulses);
+extern float QeiRotacionEncoder(uint8_t port);
+extern void HandleQEI0();
+extern void HandleQEI1();
 
-#endif
+#endif /*  __DRIVERTIVA_LIBQEI_H__ */

@@ -36,17 +36,26 @@
 
 #ifdef USEQEI0
 uint16_t OverEncoder0 = 0;
-uint16_t PulsosEncoder0;
+uint16_t PulsesEncoder0 = 0;
 #endif
 #ifdef USEQEI1
 uint16_t OverEncoder1 = 0;
-uint16_t PulsosEncoder1;
+uint16_t PulsesEncoder1 = 0;
 #endif
 
 
 
-
-void QeiInit(){
+//*****************************************************************************
+//
+//! Enables a QEI system in a DriverTIVA.
+//!
+//! This function configures a system QEI.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+QeiInit(){
 
 #ifdef USEQEI0
 	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_QEI0);
@@ -61,8 +70,19 @@ void QeiInit(){
 
 }
 
+
+//*****************************************************************************
+//
+//! Handle of peripheral QEI 0.
+//!
+//! This feature increases the OverEncoder0 variable whenever possible encoder value is exceeded.
+//!
+//! \return None.
+//
+//*****************************************************************************
 #ifdef USEQEI0
-void ManejadorQEI0(){
+void
+HandleQEI0(){
 	//Ha llegado al limite, por lo que se ha movido 2pi radianes
 
 	if(QEI_INTTIMER == 	ROM_QEIIntStatus(QEI0_BASE,1)){ //Limpiamos la interrupcion
@@ -79,8 +99,19 @@ void ManejadorQEI0(){
 
 }
 #endif
+
+//*****************************************************************************
+//
+//! Handle of peripheral QEI 1.
+//!
+//! This feature increases the OverEncoder1 variable whenever possible encoder value is exceeded.
+//!
+//! \return None.
+//
+//*****************************************************************************
 #ifdef USEQEI1
-void ManejadorQEI1(){
+void
+HandleQEI1(){
 
 	if(QEI_INTTIMER == ROM_QEIIntStatus(QEI1_BASE,1)){
 
@@ -95,7 +126,25 @@ void ManejadorQEI1(){
 }
 #endif
 
-void QeiConfigEncoder(uint8_t port,uint32_t pulsos){
+
+//*****************************************************************************
+//
+//! Enables a QEI peripheral.
+//!
+//! \param port is the QEI to put the encoder.
+//!
+//!
+//! This function config's a QEI in a GPIO with QEI capabilities.
+//!
+//! The \e port parameter can take on the following values:
+//!
+//! - \b  QEI0    - Pin PD6 and PD7
+//! - \b  QEI1    - Pin PC5 and PC6
+//!
+//! \return None.
+//
+//*****************************************************************************
+void QeiConfigEncoder(uint8_t port,uint32_t pulses){
 
 
 #ifdef USEQEI0
@@ -123,9 +172,9 @@ void QeiConfigEncoder(uint8_t port,uint32_t pulsos){
 	    						QEI_CONFIG_QUADRATURE | QEI_CONFIG_NO_SWAP),0xFFFFFFFF);
 	    //Establecer las interrupciones, inicializar la variable a cero etc
 
-	    PulsosEncoder0 = pulsos;
+	    PulsesEncoder0 = pulses;
 	    ROM_QEIPositionSet(QEI0_BASE,0);
-	    QEIIntRegister(QEI0_BASE,*ManejadorQEI0);
+	    QEIIntRegister(QEI0_BASE,*HandleQEI0);
 	    ROM_QEIIntEnable(QEI0_BASE,QEI_INTTIMER|QEI_INTINDEX);
 	    ROM_QEIEnable(QEI0_BASE);
 
@@ -148,9 +197,9 @@ void QeiConfigEncoder(uint8_t port,uint32_t pulsos){
 	    ROM_QEIConfigure(QEI1_BASE,(QEI_CONFIG_CAPTURE_A_B| QEI_CONFIG_NO_RESET |
 	    						QEI_CONFIG_QUADRATURE | QEI_CONFIG_NO_SWAP),0xFFFFFFFF);
 
-	    PulsosEncoder1 = pulsos;
+	    PulsesEncoder1 = pulses;
 	    ROM_QEIPositionSet(QEI1_BASE,0);
-	    QEIIntRegister(QEI1_BASE,*ManejadorQEI1);
+	    QEIIntRegister(QEI1_BASE,*HandleQEI1);
 	    ROM_QEIIntEnable(QEI1_BASE,QEI_INTTIMER|QEI_INTINDEX);
 	    ROM_QEIEnable(QEI1_BASE);
 	    ROM_QEIEnable(QEI1_BASE);
@@ -163,20 +212,33 @@ void QeiConfigEncoder(uint8_t port,uint32_t pulsos){
 
 
 
-
-//Devuelve el numero de vueltas en radianes
-
-float QeiRotacionEncoder(uint8_t enc){
+//*****************************************************************************
+//
+//! Enables a PWM pin.
+//!
+//! \param port is the QEI to collect the value of radians in the encoder.
+//!
+//! This function config's a PWM in a GPIO with PWM capabilities.
+//!
+//! The \e port parameter can take on the following values:
+//!
+//! - \b  QEI0    - Pin PD6 and PD7
+//! - \b  QEI1    - Pin PC5 and PC6
+//!
+//! \return the value in radiands collect in this QEI port.
+//
+//*****************************************************************************
+float QeiRotacionEncoder(uint8_t port){
 	float temp = 0.0;
 #ifdef USEQEI0
-	if(enc == QEI0){
-	temp = (float) ( (OverEncoder0* 0xFFFFFFFF +    ROM_QEIPositionGet(QEI0_BASE)) *2* M_PI)/PulsosEncoder0;
+	if(port == QEI0){
+	temp = (float) ( (OverEncoder0* 0xFFFFFFFF +    ROM_QEIPositionGet(QEI0_BASE)) *2* M_PI)/PulsesEncoder0;
 
 	}
 #endif
 #ifdef USEQEI1
-	if(enc == QEI1){
-	 temp = (float) ((OverEncoder1* 0xFFFFFFFF + ROM_QEIPositionGet(QEI1_BASE)) *2* M_PI)/PulsosEncoder1;
+	if(port == QEI1){
+	 temp = (float) ((OverEncoder1* 0xFFFFFFFF + ROM_QEIPositionGet(QEI1_BASE)) *2* M_PI)/PulsesEncoder1;
 	}
 
 #endif

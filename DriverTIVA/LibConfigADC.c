@@ -34,7 +34,19 @@
 static AD ConfigAdc;
 #endif
 
-void InitSensorADC(void){
+
+//*****************************************************************************
+//
+//! Initiate the ADC system of DriverTIVA.
+//!
+//! This initiate the ADC0, sequence0 and all channels.
+//! Enable the GPIO ports.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+InitSensorADC(void){
 #ifdef USEADC0
 	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
 #ifdef USEADC0SEQ0
@@ -76,8 +88,34 @@ void InitSensorADC(void){
 
 
 
-
-void ConfigSensorADC(int8_t Sensor){
+//*****************************************************************************
+//
+//! Enables a sensor ADC in a ADC's pin of system.
+//!
+//! \param AdcPin is ADC's pin of system GPIO.
+//!
+//! Allows to use a Sensor ADC in a GPIO pin.
+//!
+//! The \e AdcPin parameter can take on the following values:
+//!
+//! - \b ADC0  - Pin PE3
+//! - \b ADC1  - Pin PE2
+//! - \b ADC2  - Pin PE1
+//! - \b ADC3  - Pin PE0
+//! - \b ADC4  - Pin PD3
+//! - \b ADC5  - Pin PD2
+//! - \b ADC6  - Pin PD1
+//! - \b ADC7  - Pin PD0
+//! - \b ADC8  - Pin PE5
+//! - \b ADC9  - Pin PE4
+//! - \b ADC10 - Pin PB4
+//! - \b ADC11 - Pin PB5
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+ConfigSensorADC(int8_t AdcPin){
 #ifdef USEADC0
 #ifdef USEADC0SEQ0
 	ROM_ADCSequenceDisable(ADC0_BASE,0);
@@ -265,8 +303,34 @@ switch(Sensor){
 #endif
 }
 
-
-int32_t TriggerADC(int8_t Sensor ){
+//*****************************************************************************
+//
+//! Enables a sample sequence.
+//!
+//! \param AdcPin is a ADC's pin of GPIO system.
+//!
+//! Trigger a ADC system in a GPIO pin.
+//!
+//! The \e AdcPin parameter can take on the following values:
+//!
+//! - \b ADC0  - Pin PE3
+//! - \b ADC1  - Pin PE2
+//! - \b ADC2  - Pin PE1
+//! - \b ADC3  - Pin PE0
+//! - \b ADC4  - Pin PD3
+//! - \b ADC5  - Pin PD2
+//! - \b ADC6  - Pin PD1
+//! - \b ADC7  - Pin PD0
+//! - \b ADC8  - Pin PE5
+//! - \b ADC9  - Pin PE4
+//! - \b ADC10 - Pin PB4
+//! - \b ADC11 - Pin PB5
+//!
+//! \return a number of LSB measured in AdcPin.
+//
+//*****************************************************************************
+int32_t
+TriggerADC(int8_t AdcPin ){
 #ifdef USEADC0
 #ifdef USEADC0SEQ0
 	ROM_ADCSequenceEnable(ADC0_BASE,0);
@@ -424,14 +488,22 @@ switch(Sensor){
 	}
 #endif
 return 0;
-
 }
 
-float LSBToVoltage(int32_t lsb){
-	//Esto devuelve mV
-	//Suponemos que la tension del dispositivo es 3v
-	//Es decir que tenemos 3000 mV
-	return (3000.0/4096.0)*(float)lsb;
+//*****************************************************************************
+//
+//! Convert a number of LSB in voltage.
+//!
+//! \param lsb is the number of lsb.
+//!
+//! Convert a number of LSB in voltage. The voltage reference is 3.3v.
+//!
+//! \return Voltage.
+//
+//*****************************************************************************
+float
+LSBToVoltage(int32_t lsb){
+	return (3300.0/4096.0)*(float)lsb;
 }
 
 

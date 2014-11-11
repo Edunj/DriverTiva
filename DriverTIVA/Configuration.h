@@ -23,7 +23,9 @@
 #include "driverlib/rom.h"
 
 
-//ADC's defines
+//
+//! ADC define's for the pin ADC
+//
 #define ADC0   0x00 //PE3
 #define ADC1   0x01 //PE2
 #define ADC2   0x02	//PE1
@@ -37,18 +39,18 @@
 #define ADC10  0x0A //PB4
 #define ADC11  0x0B //PB5
 
-//Defines de los tipos de sensores
 
+//
+//! Define's to LibSensorsAnalog
+//
 #define GP2Y0A41SFK0F 0x00
 #define GP2Y0A21YK 	  0x01
 #define GP2D12        0x02
 
 
-//PWM's defines
-
-
-
-//Associations pin to signal
+//
+//! PWM define's for the pin PWM
+//
 #define PWM0   0x00 //PB6
 #define PWM1   0x01 //PB7
 #define PWM2   0x02	//PB4
@@ -67,8 +69,9 @@
 #define PWM15  0x0F //PF3
 
 
-//Gpio defines
-
+//
+//! GPIO define's for the pin GPIO
+//
 #define PA0 0x00
 #define PA1 0x01
 #define PA2 0x02
@@ -121,14 +124,17 @@
 
 
 
-//Encoder's defines
+//
+//! QEI define's for the port QEI
+//
 #define QEI0 0x00
 #define QEI1 0x01
 
 
 
-//TIMER's defines
-
+//
+//! Timer define's for the peripheral Timers
+//
 #define TM00  0x01  //PB6 for TIMER0 T0CCP0
 #define TM01  0x02  //PB7 for TIMER0 T0CCP1
 #define TM10  0x03  //PB4 for TIMER1 T1CCP0
@@ -160,14 +166,38 @@
 #define TMW51 0xE0  //PD7 for WTIMER5 WT5CCP1
 
 
-//Defines de odometria:
-#define radio 0.01 //Esta en metros, radio de la rueda
-#define d 0.0001   //Esta en metros, distancia entre los ejes
+//
+//! Define for odometry
+//
+//
+//! This is the define for radius of tricicle wheel (m)
+//
+#define radio 0.01
+
+//
+//! This is the define distance between wheels (m)
+//
+#define d 0.0001
+
+//
+//! This is the define of number PI
+//
 #define M_PI 3.14159265358979323846
+
+//
+//! This is the define of number e
+//
 #define NumE 2.718281828
 
-//Estruturas
 
+
+//
+//! STRUCTS
+//
+
+//
+//! This is the struct of ports GPIO
+//
 typedef union  {
 	struct{
 		uint8_t PoA0:1;
@@ -224,6 +254,10 @@ typedef union  {
 }  GPIO;
 
 
+
+//
+//! This is the struct of ports ADC
+//
 typedef union  {
 	struct{
 		uint8_t AD0:1;
@@ -243,7 +277,9 @@ typedef union  {
 } AD;
 
 
-
+//
+//! This is the struct of ports PWM
+//
 typedef union  {
 	struct{
 		uint8_t PW0:1;
@@ -267,8 +303,18 @@ typedef union  {
 }  PW;
 
 
+
 #ifdef USELCD
-//Pin RESET PD0; CE PD1; DC PD2; CLK PD3; DIN PD6
+//Pin:
+//RESET PD0;
+//CE    PD1;
+//DC    PD2;
+//CLK   PD3;
+//DIN   PD6;
+
+//
+//! This is the defines for LCD pins (all pins in the same port GPIO)
+//
 #define PIN_RESET     GPIO_PIN_0
 #define PIN_CE     	  GPIO_PIN_1
 #define PIN_DC        GPIO_PIN_2
@@ -276,14 +322,18 @@ typedef union  {
 #define PIN_DIN		  GPIO_PIN_6
 
 
-
+//
+//! This is the defines for LCD characteristics
+//
 #define LCD_X     84
 #define LCD_Y     48
 #define LCD_COMANDO 0
 #define LCD_DATO  1
 
 
-//ASCII
+//
+//! This is the matrix for ASCII characters
+//
 static const uint8_t ASCII[][5] = {
   {0x00, 0x00, 0x00, 0x00, 0x00} // 20
   ,{0x00, 0x00, 0x5f, 0x00, 0x00} // 21 !

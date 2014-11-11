@@ -22,27 +22,35 @@
 #include <stdint.h>
 
 
-//Width to signal PWM for the servos
-#define USEGENPWM0
-#define USEOUTPWM0
-#define USEOUTPWM1
-#define USEOUTPWM2
-#define USEOUTPWM3
-#define USEOUTPWM4
-#define USEOUTPWM5
-#define USEOUTPWM6
 
 
+//
+//! This is the variables for minimum period of PWM signal
+//
 static  uint16_t Min[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+//
+//! This is the variables for maximum period of PWM signal
+//
 static uint16_t Max[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-//Ancho de pulso
+
+
+//
+//! This is the variable for Period of PWM signal
+//
 static uint32_t WidthUs = 20000;
-//Prototypes
-extern int initPWMS(int  periodMs );
-extern void ConfigPWM(uint8_t pin,uint16_t min, uint16_t max );
-extern void TurnOffPWM(uint8_t servo);
+
+
+//*****************************************************************************
+//
+// API Function prototypes
+//
+//*****************************************************************************
+extern void initPWMS(int  periodMs );
+extern void ConfigPWM(uint8_t PWMpin,uint16_t min, uint16_t max );
+extern void TurnOffPWM(uint8_t PWMpin);
 
 
 
-#endif
+#endif /*__DRIVERTIVA_LIBCONFIGPWM_H__*/
 
