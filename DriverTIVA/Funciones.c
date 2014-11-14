@@ -104,27 +104,32 @@ return (deg*M_PI)/180.0;
 
 //*****************************************************************************
 //
-//! Returns the interrupt number for a given ADC base address and sequence
-//! number.
+//! This function use a odometry of the differential wheel with the parameters
+//! radio and d defines in the configuration.h
+//! This function take the last points x0, y0, rotl0, rotr0, t0, theta0 and
+//!	generate the new points x1,y1,theta1, t1,rotl1,rotr1.
 //!
-//! \param x0 is the base address of the ADC module.
-//! \param y0 is the sample sequence number.
-//! \param theta0 is the base address of the ADC module.
-//! \param t0 is the sample sequence number.
-//! \param rotl0 is the base address of the ADC module.
-//! \param rotr0 is the base address of the ADC module.
-//! \param x1 is the sample sequence number.
-//! \param y1 is the base address of the ADC module.
-//! \param theta1 is the sample sequence number.
-//! \param t1 is the base address of the ADC module.
-//! \param rotl1 is the sample sequence number.
-//! \param rotr1 is the base address of the ADC module.
+//! \param x0
+//! \param y0
+//! \param theta0
+//! \param t0
+//! \param rotl0
+//! \param rotr0
+//! \param x1
+//! \param y1
+//! \param theta1
+//! \param t1
+//! \param rotl1
+//! \param rotr1
 //!
-//! This function returns the interrupt number for the ADC module and sequence
-//! number provided in the \e ui32Base and \e ui32SequenceNum parameters.
+//!  Radio is the radius of the wheel in meters, d is the distance between wheels in
+//!  meters.
 //!
-//! \return Returns the ADC sequence interrupt number or 0 if the interrupt
-//! does not exist.
+//! This function take the last points x0, y0, rotl0, rotr0, t0, theta0 and
+//!	generate the new points x1,y1,theta1, t1,rotl1,rotr1
+//!
+//! \return Returns none, the pointers arguments are changed.
+//!
 //
 //*****************************************************************************
 void
@@ -146,13 +151,14 @@ odometry (float x0, float y0, float theta0, int64_t t0, int32_t rotl0, int32_t r
 	*rotr1 = encD;
 	*rotl1 = encI;
 	//calculo de las velocidades de las ruedas
-	VRL = ((encI - rotl0) * radio)/DeltaT;
-	VRR = ((encD - rotr0) * radio)/DeltaT;
+	//DeltaT is in us
+	VRL = (((encI - rotl0) * radio)/DeltaT) * 1e6;
+	VRR = (((encD - rotr0) * radio)/DeltaT) * 1e6;
 	VCM= (VRL + VRR)/2.0;
 
 	//Calculo de theta1
 
-	*theta1 = theta0 + (VCM/(radio*2))*DeltaT;
+	*theta1 = theta0 + ((VCM*DeltaT)/d);
 
 	//calculo de x1 e y1
 	 *x1 = (x0 + (VCM*DeltaT)*cosf(*theta1));
@@ -163,21 +169,20 @@ odometry (float x0, float y0, float theta0, int64_t t0, int32_t rotl0, int32_t r
 
 //*****************************************************************************
 //
-//! Returns the interrupt number for a given ADC base address and sequence
-//! number.
+//! Returns the interpolation of val in the range valmin, valmax, using
+//! rangmax and rangmin for the value val
 //!
-//! \param rangmin is the base address of the ADC module.
-//! \param rangmax is the sample sequence number.
-//! \param valmin is the base address of the ADC module.
-//! \param valmax is the sample sequence number.
-//! \param val is the base address of the ADC module.
+//! \param rangmin min rang for the output data.
+//! \param rangmax max rang for the output data.
+//! \param valmin  min rang for the imput data.
+//! \param valmax  max rang for the imput data.
+//! \param val  value between valmin and valmax.
 //!
-//! This function returns the interrupt number for the ADC module and sequence
-//! number provided in the \e ui32Base and \e ui32SequenceNum parameters.
+//! Val is a value between valmax and valmin, the return function is the
+//! interpolation value between rangmax and rangmin.
 //!
-//! \return Returns the ADC sequence interrupt number or 0 if the interrupt
-//! does not exist.
-//
+//! \return Returns a uint32_t value.
+//!
 //*****************************************************************************
 uint32_t
 map(uint32_t rangmin, uint32_t rangmax, uint32_t valmin, uint32_t valmax, uint32_t val){
@@ -191,21 +196,20 @@ map(uint32_t rangmin, uint32_t rangmax, uint32_t valmin, uint32_t valmax, uint32
 
 //*****************************************************************************
 //
-//! Returns the interrupt number for a given ADC base address and sequence
-//! number.
+//! Returns the inversal interpolation of val in the range valmin, valmax, using
+//! rangmax and rangmin for the value val
 //!
-//! \param rangmin is the base address of the ADC module.
-//! \param rangmax is the sample sequence number.
-//! \param valmin is the base address of the ADC module.
-//! \param valmax is the sample sequence number.
-//! \param val is the base address of the ADC module.
+//! \param rangmin min rang for the output data.
+//! \param rangmax max rang for the output data.
+//! \param valmin  min rang for the imput data.
+//! \param valmax  max rang for the imput data.
+//! \param val  value between valmin and valmax.
 //!
-//! This function returns the interrupt number for the ADC module and sequence
-//! number provided in the \e ui32Base and \e ui32SequenceNum parameters.
+//! Val is a value between valmax and valmin, the return function is the
+//! interpolation value between rangmax and rangmin.
 //!
-//! \return Returns the ADC sequence interrupt number or 0 if the interrupt
-//! does not exist.
-//
+//! \return Returns a uint32_t value.
+//!
 //*****************************************************************************
 uint32_t
 mapinv(uint32_t rangmin, uint32_t rangmax, uint32_t valmin, uint32_t valmax, uint32_t val){
@@ -219,17 +223,17 @@ mapinv(uint32_t rangmin, uint32_t rangmax, uint32_t valmin, uint32_t valmax, uin
 
 //*****************************************************************************
 //
-//! Returns the interrupt number for a given ADC base address and sequence
-//! number.
+//! Returns  a random value in the gaussian distribution with mean mean and
+//! standard desviation sigma.
 //!
-//! \param mean is the base address of the ADC module.
-//! \param sigma is the sample sequence number.
+//! \param mean is the mean of the gaussian distribution
+//! \param sigma is the standard desviation
 //!
-//! This function returns the interrupt number for the ADC module and sequence
-//! number provided in the \e ui32Base and \e ui32SequenceNum parameters.
+//! Returns  a random value in the gaussian distribution with mean mean and
+//! standard desviation sigma.
 //!
-//! \return Returns the ADC sequence interrupt number or 0 if the interrupt
-//! does not exist.
+//! \return Returns a float random value.
+//!
 //
 //*****************************************************************************
 float
