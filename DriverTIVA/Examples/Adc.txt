@@ -1,0 +1,19 @@
+#include "driverlib/sysctl.h"
+#include "DriverTIVA/DriverTIVA.h"
+#include "inc/hw_memmap.h"
+
+
+
+int main(void)
+{
+
+	SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ |
+	                       SYSCTL_OSC_MAIN);
+	FPULazyStackingEnable();
+	FPUEnable();
+ 	InitSensorADC();
+	ConfigSensorADC(ADC0);
+	float Resultado_cm =  ValorSensorAnalogico(ADC0,GP2Y0A41SFK0F);
+
+	while(1);
+}

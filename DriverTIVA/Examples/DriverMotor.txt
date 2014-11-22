@@ -1,0 +1,22 @@
+#include "driverlib/sysctl.h"
+#include "DriverTIVA/DriverTIVA.h"
+#include "inc/hw_memmap.h"
+int main(void)
+{
+
+SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ |
+	                       SYSCTL_OSC_MAIN);
+    	initPWMS();
+	configDRVPWM(PWM0,PWM1,PWM2,PWM3,0,0,0,0,0,0,0,0,0,0,0,0);
+	ForWardMotor(90,'a');
+	ForWardMotor(50,'b');
+	SysCtlDelay(10000);
+	brakeMotor('a');
+	brakeMotor('b');
+	ReverseMotor(90,'a');
+	ReverseMotor(50,'b');
+	SysCtlDelay(10000);
+	brakeMotor('a');
+	brakeMotor('b');
+	while(1);
+}

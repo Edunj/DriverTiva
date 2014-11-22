@@ -1,0 +1,14 @@
+#include "driverlib/sysctl.h"
+#include "DriverTIVA/DriverTIVA.h"
+#include "inc/hw_memmap.h"
+int main(void)
+{
+
+SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ |
+	                       SYSCTL_OSC_MAIN);    
+	LCDInit();
+	LCDClear();
+	gotoXY(0,0);
+	LCDString(“Hello World”);
+	}
+}
