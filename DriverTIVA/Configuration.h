@@ -23,6 +23,8 @@
 #include "driverlib/rom.h"
 
 
+
+
 //
 //! ADC define's for the pin ADC
 //
@@ -190,11 +192,55 @@
 #define NumE 2.718281828
 
 
+//
+//! Global Variables for PWM Module
+//
+
+//
+//! This is the variables for minimum period of PWM signal
+//
+  uint16_t Min[16];
+
+//
+//! This is the variables for maximum period of PWM signal
+//
+  uint16_t Max[16];
+
+
+//
+//! This is the variable for Period of PWM signal
+//
+ uint32_t WidthUs;
 
 //
 //! STRUCTS
 //
 
+
+ //
+ //! This is the struct of ports PWM
+ //
+ typedef union  {
+ 	struct{
+ 		uint8_t PW0:1;
+ 		uint8_t PW1:1;
+ 		uint8_t PW2:1;
+ 		uint8_t PW3:1;
+ 		uint8_t PW4:1;
+ 		uint8_t PW5:1;
+ 		uint8_t PW6:1;
+ 		uint8_t PW7:1;
+ 		uint8_t PW8:1;
+ 		uint8_t PW9:1;
+ 		uint8_t PW10:1;
+ 		uint8_t PW11:1;
+ 		uint8_t PW12:1;
+ 		uint8_t PW13:1;
+ 		uint8_t PW14:1;
+ 		uint8_t PW15:1;
+ 	} PWM;
+ 	uint8_t PWMS[2];
+ }  PW;
 //
 //! This is the struct of ports GPIO
 //
@@ -277,30 +323,7 @@ typedef union  {
 } AD;
 
 
-//
-//! This is the struct of ports PWM
-//
-typedef union  {
-	struct{
-		uint8_t PW0:1;
-		uint8_t PW1:1;
-		uint8_t PW2:1;
-		uint8_t PW3:1;
-		uint8_t PW4:1;
-		uint8_t PW5:1;
-		uint8_t PW6:1;
-		uint8_t PW7:1;
-		uint8_t PW8:1;
-		uint8_t PW9:1;
-		uint8_t PW10:1;
-		uint8_t PW11:1;
-		uint8_t PW12:1;
-		uint8_t PW13:1;
-		uint8_t PW14:1;
-		uint8_t PW15:1;
-	} PWM;
-	uint8_t PWMS[2];
-}  PW;
+
 
 
 

@@ -22,18 +22,18 @@
 
 
 
-
+#include "Configuration.h"
+#include "Funciones.h"
 #include "LibDRVPWM.h"
 #include "LibServo.h"
 #include "LibSensorsAnalog.h"
 #include "Libqei.h"
 #include "LibSensorTOF.h"
-#include "Funciones.h"
-#include "Configuration.h"
 #include "LibLCD5110.h"
 
 
 //#define Activartodos
+
 
 
 #ifdef Activartodos

@@ -31,8 +31,9 @@
 #include "driverlib/uart.h"
 #include "utils/uartstdio.h"
 #include "driverlib/rom.h"
-#include "Funciones.h"
 #include "Configuration.h"
+//#include "Funciones.h"
+
 
 
 
@@ -54,8 +55,27 @@ static float UstoTicks;
 //****************************************************************************
 void
 initPWMS( int  periodMs ){
+	//Initialization of WidthUs
+	if(periodMs !=0){
+		WidthUs = periodMs*1000;
+	}else{
+		WidthUs = 20000;
+	}
+	//Initialization of Min and Max
+	int i = 0;
+	for ( i= 0; i<16;i++){
+		Min[i] = 0;
+		Max[i] = 0;
+	}
 
-	WidthUs = periodMs*1000;
+
+	// Inicialization pinsPWM
+	#ifdef USEGENPWM0
+	ConfigPwm.PWMS[0] = 0x00;
+	#endif
+	#ifdef USEGENPWM1
+	ConfigPwm.PWMS[1] = 0x00;
+	#endif
 
 if(ROM_SysCtlClockGet() < 167777216  ){
 	ROM_SysCtlPWMClockSet(SYSCTL_PWMDIV_64);
@@ -81,14 +101,6 @@ ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
 ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
 ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
 
-// Inicialization servos
-#ifdef USEGENPWM0
-ConfigPwm.PWMS[0] = 0x00;
-#endif
-#ifdef USEGENPWM1
-ConfigPwm.PWMS[1] = 0x00;
-#endif
-
 }
 
 
@@ -98,8 +110,8 @@ ConfigPwm.PWMS[1] = 0x00;
 //! Enables a PWM pin.
 //!
 //! \param PWMpin is the pin PWM to put the PWM signal .
-//! \param min is the minimum width of PWM signal.
-//! \param max is the maximum width of PWM signal.
+//! \param min is the minimum width of PWM signal in us.
+//! \param max is the maximum width of PWM signal in us.
 //!
 //!
 //! This function config's a PWM in a GPIO with PWM capabilities.
@@ -148,7 +160,6 @@ ConfigPwm.PWMS[1] = 0x00;
 				ROM_PWMOutputState(PWM0_BASE, PWM_OUT_0_BIT, true);
 	    	}
 			break;
-
 	    }
 #endif
 #ifdef USEOUTPWM1
@@ -185,7 +196,6 @@ ConfigPwm.PWMS[1] = 0x00;
 				PWMOutputState(PWM0_BASE, PWM_OUT_2_BIT, true);
 	    	}
 			break;
-
 	    }
 #endif
 #ifdef USEOUTPWM3
@@ -204,7 +214,6 @@ ConfigPwm.PWMS[1] = 0x00;
 				ROM_PWMOutputState(PWM0_BASE, PWM_OUT_3_BIT, true);
 	    	}
 			break;
-
 	    }
 #endif
 #ifdef USEOUTPWM4
@@ -296,10 +305,8 @@ ConfigPwm.PWMS[1] = 0x00;
 				ROM_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_0, 0);
 				ROM_PWMGenEnable(PWM1_BASE,PWM_GEN_0);
 				ROM_PWMOutputState(PWM1_BASE, PWM_OUT_0_BIT, true);
-
 	    	}
 		    break;
-
 	    }
 #endif
 #ifdef USEOUTPWM9
@@ -334,7 +341,6 @@ ConfigPwm.PWMS[1] = 0x00;
 				ROM_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_2, 0);
 				ROM_PWMGenEnable(PWM1_BASE,PWM_GEN_1);
 				ROM_PWMOutputState(PWM1_BASE, PWM_OUT_2_BIT, true);
-
 	    	}
 			break;
 	    }
@@ -353,7 +359,6 @@ ConfigPwm.PWMS[1] = 0x00;
 				ROM_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, 0);
 				ROM_PWMGenEnable(PWM1_BASE,PWM_GEN_1);
 				ROM_PWMOutputState(PWM1_BASE, PWM_OUT_3_BIT, true);
-
 	    	}
 			break;
 	    }
@@ -376,7 +381,6 @@ ConfigPwm.PWMS[1] = 0x00;
 				ROM_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_4, 0);
 				ROM_PWMGenEnable(PWM1_BASE,PWM_GEN_2);
 				ROM_PWMOutputState(PWM1_BASE, PWM_OUT_4_BIT, true);
-
 	    	}
 			break;
 	    }
@@ -395,7 +399,6 @@ ConfigPwm.PWMS[1] = 0x00;
 				ROM_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_5, 0);
 				ROM_PWMGenEnable(PWM1_BASE,PWM_GEN_2);
 				ROM_PWMOutputState(PWM1_BASE, PWM_OUT_5_BIT, true);
-
 	    	}
 			break;
 	    }
@@ -415,7 +418,6 @@ ConfigPwm.PWMS[1] = 0x00;
 				ROM_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_6, 0);
 				ROM_PWMGenEnable(PWM1_BASE,PWM_GEN_3);
 				ROM_PWMOutputState(PWM1_BASE, PWM_OUT_6_BIT, true);
-
 	    	}
 			break;
 	    }
@@ -434,7 +436,6 @@ ConfigPwm.PWMS[1] = 0x00;
 				ROM_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_7, 0);
 				ROM_PWMGenEnable(PWM1_BASE,PWM_GEN_3);
 				ROM_PWMOutputState(PWM1_BASE, PWM_OUT_7_BIT, true);
-
 	    	}
 	    	break;
 	    }

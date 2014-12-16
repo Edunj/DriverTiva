@@ -161,8 +161,8 @@ odometry (float x0, float y0, float theta0, int64_t t0, int32_t rotl0, int32_t r
 	*theta1 = theta0 + ((VCM*DeltaT)/d);
 
 	//calculo de x1 e y1
-	 *x1 = (x0 + (VCM*DeltaT)*cosf(*theta0));
-	 *y1 = (y0 + (VCM*DeltaT)*sinf(*theta0));
+	// *x1 = (x0 + (VCM*DeltaT)*cosf(*theta0));
+	// *y1 = (y0 + (VCM*DeltaT)*sinf(*theta0));
 
 
 }

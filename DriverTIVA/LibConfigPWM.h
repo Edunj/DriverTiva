@@ -22,23 +22,24 @@
 #include <stdint.h>
 
 
-
-
 //
 //! This is the variables for minimum period of PWM signal
 //
-static  uint16_t Min[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+extern  uint16_t Min[16];
 
 //
 //! This is the variables for maximum period of PWM signal
 //
-static uint16_t Max[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+extern  uint16_t Max[16];
 
 
 //
 //! This is the variable for Period of PWM signal
 //
-static uint32_t WidthUs = 20000;
+extern uint32_t WidthUs;
+
+
+
 
 
 //*****************************************************************************

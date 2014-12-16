@@ -24,6 +24,22 @@
 #include "LibConfigPWM.h"
 
 
+//
+//! This is the variables for minimum period of PWM signal
+//
+extern  uint16_t Min[16];
+
+//
+//! This is the variables for maximum period of PWM signal
+//
+extern  uint16_t Max[16];
+
+
+//
+//! This is the variable for Period of PWM signal
+//
+extern uint32_t WidthUs;
+
 
 //*****************************************************************************
 //

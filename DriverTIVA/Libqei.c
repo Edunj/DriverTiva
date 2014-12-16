@@ -214,7 +214,7 @@ void QeiConfigEncoder(uint8_t port,uint32_t pulses){
 
 //*****************************************************************************
 //
-//! Enables a PWM pin.
+//! Return a value in radians collect in this QEI port.
 //!
 //! \param port is the QEI to collect the value of radians in the encoder.
 //!
