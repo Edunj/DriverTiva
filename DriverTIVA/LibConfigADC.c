@@ -124,7 +124,7 @@ ConfigSensorADC(int8_t AdcPin){
 	ROM_ADCSequenceDisable(ADC0_BASE,1);
 #endif
 
-switch(Sensor){
+switch(AdcPin){
 #ifdef USEADC0SEQ0
 #ifdef USEADC0SEQ0IN0
 	    case ADC0:{
@@ -381,7 +381,7 @@ TriggerADC(int8_t AdcPin ){
 
 
 
-switch(Sensor){
+switch(AdcPin){
 #ifdef USEADC0SEQ0
 #ifdef USEADC0SEQ0IN0
 	    case ADC0:{
