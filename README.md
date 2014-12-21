@@ -10,7 +10,7 @@ It consists of three parts,
 * A calibration PC program for analog sensors
 
 
-<h3>features</h3>
+<h3>Features:</h3>
 
 * Up to 12 analog sensors
 * Up to 16 servo motors, or 4 motors by PWM
